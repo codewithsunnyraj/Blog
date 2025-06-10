@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { blogCategories } from "../assets/assets";
+import { blog_data, blogCategories } from "../assets/assets";
 import { motion } from "motion/react";
+import Blogcard from "./Blogcard";
 const Blog_list = () => {
   const [menu, setMenu] = useState("All");
   console.log(menu);
   return (
-    <div className="w-full ">
+    <div className= " container mx-auto w-full ">
       <div className="flex justify-center items-center gap-10 relative ">
         {blogCategories.map((items) => (
           <div key={items} className="relative">
@@ -26,6 +27,13 @@ const Blog_list = () => {
             </button>
           </div>
         ))}
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 ">
+        {blog_data
+          .filter((tannu) => (menu === "All" ? true : tannu.category === menu))
+          .map((items) => (
+            <Blogcard key={items._id} blog={items} />
+          ))}
       </div>
     </div>
   );
