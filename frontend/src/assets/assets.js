@@ -189,7 +189,7 @@ export const comments_data = [
             "blog": blog_data[0],
             "name": "Michael Scott",
             "content": "This is my new comment",
-            "isApproved": false,
+             "isApproved": false,
             "createdAt": "2025-04-30T09:30:06.918Z",
             "updatedAt": "2025-04-30T09:30:06.918Z",
             "__v": 0
