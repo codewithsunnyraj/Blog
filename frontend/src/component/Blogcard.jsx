@@ -8,7 +8,7 @@ const Blogcard = ({ blog }) => {
       onClick={() => {
         navigate(`/blog/${_id}`);
       }}
-      className="cursor-pointer transition-all hover:scale-95 duration-300 shadow my-10"
+      className="cursor-pointer container mx-auto transition-all hover:scale-95 duration-300 shadow my-3 md:my-10"
     >
       <div>
         <img src={image} className="aspect-video rounded-t-xl" alt="" />

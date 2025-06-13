@@ -8,10 +8,10 @@ const Navbar = () => {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className="flex justify-between py-4 px-10 items-center">
+        <div className="flex justify-between py-4 xs:px-10 px-6 items-center">
           <div>
             <img
-              className="cursor-pointer "
+              className="cursor-pointer sm:w-full xs:w-36 w-28"
               onClick={() => navigate("/")}
               src={assets.logo}
               alt=""
@@ -20,7 +20,7 @@ const Navbar = () => {
           <div>
             <button
               onClick={() => navigate("/admin")}
-              className="bg-blue-600 flex cursor-pointer items-center gap-2 text-white py-2 rounded-full px-10"
+              className="bg-blue-600 flex cursor-pointer px-8 xs:px-6 items-center gap-2 text-white py-2 rounded-full sm:px-10"
             >
               Login
               <FaArrowRight className="text-xs" />

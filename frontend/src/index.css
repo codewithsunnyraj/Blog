@@ -9,6 +9,18 @@
   display: none;
 }
 
+
+/* Responsive section start */
+@theme {
+  --breakpoint-xs: 480px; /*Apply between 480px to 640px screen width*/
+  --breakpoint-sm: 640px; /*Apply between 640px to 768px screen width*/
+  --breakpoint-md: 768px; /*Apply between 768px to 1024px screen width*/
+  --breakpoint-lg: 1024px; /*Apply between 1024px to 1280px screen width*/
+  --breakpoint-xl: 1280px; /*Apply between 1280px to 1536 screen width*/
+  --breakpoint-xxl: 1536px; /*Apply greater than 1536px screen width*/
+}
+/* Responsive section end */
+
 .rich-text {
   font-size: 15px;
 }

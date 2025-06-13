@@ -3,10 +3,10 @@ import React from "react";
 const Newsletter = () => {
   return (
     <div className="container mx-auto">
-      <div className="flex justify-center items-center my-8 md:my-16">
+      <div className="flex justify-center m-3 md:m-5 items-center  md:my-16">
         <div className="text-center">
-          <h3 className="font-semibold text-4xl">Never Miss a Blog!</h3>
-          <p className="py-3 text-xl text-slate-500">
+          <h3 className="font-semibold text-2xl sm:text-3xl md:text-4xl">Never Miss a Blog!</h3>
+          <p className="py-3 xs:text-xl text-slate-500">
             Subscribe to get the latest blog, new tech, and exclusive news.
           </p>
           <div className="my-8">

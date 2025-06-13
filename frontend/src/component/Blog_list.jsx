@@ -6,8 +6,8 @@ const Blog_list = () => {
   const [menu, setMenu] = useState("All");
   console.log(menu);
   return (
-    <div className= " container mx-auto w-full ">
-      <div className="flex justify-center items-center gap-10 relative ">
+    <div className= " container mx-auto ">
+      {/* <div className="flex justify-center items-center gap-2 md:gap-10 relative ">
         {blogCategories.map((items) => (
           <div key={items} className="relative">
             <button
@@ -27,8 +27,8 @@ const Blog_list = () => {
             </button>
           </div>
         ))}
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 ">
+      </div> */}
+      <div className="grid md:grid-cols-2 mx-4 xs:mx-6 lg:grid-cols-4 gap-4 md:gap-8 ">
         {blog_data
           .filter((tannu) => (menu === "All" ? true : tannu.category === menu))
           .map((items) => (

@@ -50,15 +50,15 @@ const Blog = () => {
                 Skull Dued
               </span>
             </div>
-            <div className="lg:max-w-5xl my-8 lg:my-20">
+            <div className="lg:max-w-5xl m-4 md:my-8 lg:my-20">
               <img src={data.image} alt="" className="rounded-2xl" />
             </div>
             <div
-              className="rich-text"
+              className="rich-text p-4 md:p-0"
               dangerouslySetInnerHTML={{ __html: data.description }}
             ></div>
             {/* Comment section start */}
-            <div className="my-8">
+            <div className="my-8 mx-4 md:mx-0">
               <p className="font-bold ">Comment({comments_data.length})</p>
               <div>
                 {comments_data.map((items, index) => (
@@ -79,7 +79,7 @@ const Blog = () => {
                 ))}
               </div>
             </div>
-            <div className="my-6 py-8">
+            <div className="md:my-6 mx-3 md:mx-0 py-8">
               <h3 className="font-semibold text-2xl mb-3">Add Your Comment</h3>
               <form onSubmit={addComment}>
                 <div>
@@ -114,7 +114,7 @@ const Blog = () => {
                 </div>
               </form>
             </div>
-            <div className="mt-4 mb-14">
+            <div className="mt-4 mx-3 md:mx-0 mb-14">
               <div>
                 <p className="font-semibold">
                   Share this article on social media
