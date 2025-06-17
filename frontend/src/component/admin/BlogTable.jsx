@@ -8,7 +8,7 @@ const BlogTable = ({ blog, fetchBlogs, index }) => {
   return (
     <tr className="border-y border-gray-300">
       <th className="px-2 py-2 text-nowrap">{index}</th>
-      <td className="p-2 text-nowrap">{title}</td>
+      <td className="p-2 text-nowrap">{blog.title}</td>
       <td className="p-2 text-nowrap">{BlogDate.toDateString()}</td>
       <td className="p-2 text-nowrap">
         <p
