@@ -72,3 +72,82 @@ export const addBlog = async (req, res) => {
     console.log(error);
   }
 };
+
+// Fetch Blog
+export const fetchBlog = async (req, res) => {
+  try {
+    const blogs = await Blog.find({ isPublished: true });
+    res.status(200).json({
+      message: "Fetch all published Blog",
+      success: true,
+      data: blogs,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error While Fetching Blog",
+      success: false,
+    });
+  }
+};
+
+//Fetch Blog By Id
+
+export const getBlogById = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog Not Found",
+        success: false,
+      });
+    }
+    res.status(200).json({
+      message: "Blog Show By Id",
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error While Fetching Blog Data",
+      success: false,
+    });
+  }
+};
+
+export const deleteBlog = async (req, res) => {
+  const { blogId } = req.body;
+  try {
+    const blog = await Blog.findByIdAndDelete(blogId);
+    res.status(200).json({
+      message: "Blog Deleted Successfully",
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error while Deleting Blog",
+      success: false,
+    });
+  }
+};
+
+//togglePublished
+export const togglePublish = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const blog = await Blog.findById(id);
+    blog.isPublished = !blog.isPublished;
+    await blog.save();
+    res.status(200).json({
+      message: "Blog Status Updated",
+      success: true,
+      blog,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error while Toggle Blog To Publish",
+      success: false,
+    });
+  }
+};

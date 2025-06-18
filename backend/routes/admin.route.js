@@ -1,6 +1,6 @@
 import { adminLogin } from "../controller/admin.controller.js";
 import express from "express";
-import { addBlog } from "../controller/blog.controller.js";
+import { addBlog, fetchBlog } from "../controller/blog.controller.js";
 import { upload } from "../middleware/multer.js";
 import { Auth } from "../middleware/Auth.middleware.js";
 
@@ -13,3 +13,5 @@ export const blogRouter = router.post(
   Auth,
   addBlog
 );
+
+export const fetchBlogs = router.get("/allBlog", fetchBlog);
