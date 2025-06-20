@@ -117,15 +117,16 @@ export const getBlogById = async (req, res) => {
 
 //Delete Blog
 export const deleteBlog = async (req, res) => {
-  const { blogId } = req.body;
+  const { _id } = req.body;
   try {
-    const blog = await Blog.findByIdAndDelete(blogId);
+    const blog = await Blog.findByIdAndDelete({ _id });
     res.status(200).json({
       message: "Blog Deleted Successfully",
       success: true,
       blog,
     });
   } catch (error) {
+    console.log(error.message);
     res.status(404).json({
       message: "Error while Deleting Blog",
       success: false,
@@ -133,11 +134,15 @@ export const deleteBlog = async (req, res) => {
   }
 };
 
+
+
+
+
 //togglePublished
 export const togglePublish = async (req, res) => {
   try {
-    const { id } = req.body;
-    const blog = await Blog.findById(id);
+    const { _id } = req.body;
+    const blog = await Blog.findById(_id);
     blog.isPublished = !blog.isPublished;
     await blog.save();
     res.status(200).json({
