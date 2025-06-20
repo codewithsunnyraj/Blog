@@ -91,11 +91,11 @@ export const fetchBlog = async (req, res) => {
 };
 
 //Fetch Blog By Id
-
 export const getBlogById = async (req, res) => {
   try {
-    const { blogId } = req.params;
-    const blog = await Blog.findById(blogId);
+    const { id } = req.params;
+    console.log(id);
+    const blog = await Blog.findById(id);
     if (!blog) {
       return res.status(404).json({
         message: "Blog Not Found",
@@ -115,6 +115,7 @@ export const getBlogById = async (req, res) => {
   }
 };
 
+//Delete Blog
 export const deleteBlog = async (req, res) => {
   const { blogId } = req.body;
   try {
