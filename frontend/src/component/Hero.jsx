@@ -1,7 +1,20 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
+import { useRef } from "react";
 
 const Hero = () => {
+  const { input, setInput } = useAppContext();
+  const inputRef = useRef();
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    setInput(inputRef.current.value);
+  };
+
+  const onClear = () => {
+    setInput("");
+    inputRef.current.value = "";
+  };
   return (
     <div className="py-6 md:py-20 container mx-auto md:px-20 relative">
       <div className="flex flex-col justify-center items-center">
@@ -21,10 +34,11 @@ const Hero = () => {
             story starts rights here
           </p>
           <form
-            action=""
+            onSubmit={onSubmitHandler}
             className="border hidden md:flex mx-2 my-4 xs:my-6 relative w-full rounded border-gray-400 md:max-w-2xl shadow  pl-2"
           >
             <input
+              ref={inputRef}
               type="text"
               className="pl-4 outline-none py-4 w-[75%]  md:w-[85%] "
               placeholder="Search Blog Here"
@@ -33,6 +47,13 @@ const Hero = () => {
               Search
             </button>
           </form>
+        </div>
+        <div>
+          {input && (
+            <button onClick={onClear} className="">
+              Clear Search
+            </button>
+          )}
         </div>
       </div>
       <div>

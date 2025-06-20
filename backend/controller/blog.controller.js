@@ -1,6 +1,7 @@
 import fs from "fs";
 import imagekit from "../config/ImageKit.js";
 import { Blog } from "../model/blog.model.js";
+import { comment } from "../model/comment.model.js";
 export const addBlog = async (req, res) => {
   try {
     const { title, subTitle, description, category, isPublished } = req.body;
@@ -120,6 +121,10 @@ export const deleteBlog = async (req, res) => {
   const { _id } = req.body;
   try {
     const blog = await Blog.findByIdAndDelete({ _id });
+
+    //Delete all comments associated with the blog
+    await comment.deleteMany({ blog: _id });
+
     res.status(200).json({
       message: "Blog Deleted Successfully",
       success: true,
@@ -133,10 +138,6 @@ export const deleteBlog = async (req, res) => {
     });
   }
 };
-
-
-
-
 
 //togglePublished
 export const togglePublish = async (req, res) => {
@@ -153,6 +154,58 @@ export const togglePublish = async (req, res) => {
   } catch (error) {
     res.status(404).json({
       message: "Error while Toggle Blog To Publish",
+      success: false,
+    });
+  }
+};
+
+//Comment part
+
+export const addComment = async (req, res) => {
+  try {
+    const { blog, content, name } = req.body;
+    if (!blog || !content || !name) {
+      res.status(404).json({
+        message: "Enter All fields in comment",
+        success: false,
+      });
+    }
+
+    const data = {
+      blog,
+      content,
+      name,
+    };
+
+    const AddComment = await comment(data);
+    await AddComment.save();
+    res.status(200).json({
+      message: "Comment Added Successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error whilie adding Comment",
+      success: false,
+    });
+  }
+};
+
+//getblog comment
+export const getBlogComments = async (req, res) => {
+  try {
+    const { blogId } = req.body;
+    const blogComment = await comment
+      .find({ blog: blogId, isApproved: true })
+      .sort({ createdAt: -1 });
+    res.status(200).json({
+      message: "Comment Data Fetched",
+      success: true,
+      blogComment,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Error while fetching comment data",
       success: false,
     });
   }

@@ -4,22 +4,59 @@ import { assets, blog_data, comments_data } from "../assets/assets";
 import moment from "moment";
 import Navbar from "../component/Navbar";
 import Loader from "../component/Loader";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 const Blog = () => {
   const { id } = useParams();
+  const { axios } = useAppContext();
   const [data, setData] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [content, setContent] = useState([]);
   const [name, setName] = useState("");
   const [comment, setComment] = useState(" ");
+
   const fetchComments = async () => {
-    setComments(comments_data);
+    try {
+      const { data } = axios.post("/api/blog/comment", { blogId: id });
+      console.log("comment data", data);
+      if (data.success) {
+        setComment(data.comment);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
   };
   const fetchBlogData = async () => {
-    const value = blog_data.find((item) => item._id === id);
-    setData(value);
+    try {
+      {
+        const { data } = await axios.get(`/api/blog/blogById/${id}`);
+        data.success ? setData(data.blog) : toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   const addComment = async (event) => {
     event.preventDefault();
-    console.log(name, comment);
+    try {
+      const { data } = axios.post("/api/blog/add-comment", {
+        blog: id,
+        name,
+        content,
+      });
+      if (data.success) {
+        toast.success(data.message);
+        setName("");
+        setComment("");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
   };
   useEffect(() => {
     fetchBlogData();
@@ -99,11 +136,11 @@ const Blog = () => {
                   <textarea
                     name="comment"
                     id="comment"
-                    value={comment}
+                    value={content}
                     placeholder="Enter Comment Here"
                     className="py-2 px-2 my-5 w-full max-w-2xl outline-none border border-slate-300 min-h-32"
                     onChange={(e) => {
-                      setComment(e.target.value);
+                      setContent(e.target.value);
                     }}
                   ></textarea>
                 </div>
