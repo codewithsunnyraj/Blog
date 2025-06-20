@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import { DbConnect } from "./config/DbConnect.js";
 import cors from "cors";
-import { adminRoute, blogRouter, fetchBlogs } from "./routes/admin.route.js";
+import { adminRoute } from "./routes/admin.route.js";
+import { blogRouter, fetchBlogs } from "./routes/blog.route.js";
 
 const app = express();
 app.use(express.json());
