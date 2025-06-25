@@ -17,9 +17,8 @@ const Blog = () => {
   const fetchComments = async () => {
     try {
       const { data } = await axios.post("/api/blog/comment", { blogId: id });
-      console.log("fetching", data.success);
       if (data.success) {
-        setContent(data);
+        setContent(data.data);
       } else {
         toast.error(data.message);
       }
@@ -99,15 +98,17 @@ const Blog = () => {
             ></div>
             {/* Comment section start */}
             <div className="my-8 mx-4 md:mx-0">
-              <p className="font-bold ">Comment({ content.length ||comments_data.length})</p>
+              <p className="font-bold ">
+                Comment({content.length || comments_data.length})
+              </p>
               <div>
-                {comments_data.map((items, index) => (
+                {content.map((items, index) => (
                   <div key={index} className="p-6 my-4 shadow">
                     <div className="flex gap-2 items-center">
                       <img src={assets.user_icon} className="h-10" alt="" />
                       <div>
                         <p className="mt-4">{items.name}</p>
-                        <p>{items.comment}</p>
+                        <p>{items.content}</p>
                       </div>
                     </div>
                     <div>
