@@ -2,10 +2,16 @@ import React from "react";
 import { assets } from "../../assets/assets";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../component/admin/Sidebar";
+import { useAppContext } from "../../context/AppContext";
 
 const Layout = () => {
-  const navigate = useNavigate();
-  const handleLogout = () => {};
+  const { axios, setToken, navigate } = useAppContext();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    axios.defaults.headers.common["Authorization"] = null;
+    setToken(null);
+    navigate("/");
+  };
   return (
     <>
       <div className="py-4 border border-slate-200 shadow ">

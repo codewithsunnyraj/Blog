@@ -16,10 +16,10 @@ const Blog = () => {
 
   const fetchComments = async () => {
     try {
-      const { data } = axios.post("/api/blog/comment", { blogId: id });
-      console.log("comment data", data);
+      const { data } = await axios.post("/api/blog/comment", { blogId: id });
+      console.log("fetching", data.success);
       if (data.success) {
-        setComment(data.comment);
+        setContent(data);
       } else {
         toast.error(data.message);
       }
@@ -28,6 +28,7 @@ const Blog = () => {
       console.log(error);
     }
   };
+
   const fetchBlogData = async () => {
     try {
       {
@@ -38,13 +39,14 @@ const Blog = () => {
       toast.error(error.message);
     }
   };
+
   const addComment = async (event) => {
     event.preventDefault();
     try {
-      const { data } = axios.post("/api/blog/add-comment", {
+      const { data } = await axios.post("/api/blog/add-comment", {
         blog: id,
         name,
-        content,
+        content: comment,
       });
       if (data.success) {
         toast.success(data.message);
@@ -58,6 +60,7 @@ const Blog = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchBlogData();
     fetchComments();
@@ -96,7 +99,7 @@ const Blog = () => {
             ></div>
             {/* Comment section start */}
             <div className="my-8 mx-4 md:mx-0">
-              <p className="font-bold ">Comment({comments_data.length})</p>
+              <p className="font-bold ">Comment({ content.length ||comments_data.length})</p>
               <div>
                 {comments_data.map((items, index) => (
                   <div key={index} className="p-6 my-4 shadow">
@@ -104,7 +107,7 @@ const Blog = () => {
                       <img src={assets.user_icon} className="h-10" alt="" />
                       <div>
                         <p className="mt-4">{items.name}</p>
-                        <p>{items.content}</p>
+                        <p>{items.comment}</p>
                       </div>
                     </div>
                     <div>
@@ -136,11 +139,11 @@ const Blog = () => {
                   <textarea
                     name="comment"
                     id="comment"
-                    value={content}
+                    value={comment}
                     placeholder="Enter Comment Here"
                     className="py-2 px-2 my-5 w-full max-w-2xl outline-none border border-slate-300 min-h-32"
                     onChange={(e) => {
-                      setContent(e.target.value);
+                      setComment(e.target.value);
                     }}
                   ></textarea>
                 </div>

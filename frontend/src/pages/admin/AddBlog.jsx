@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { assets, blogCategories } from "../../assets/assets";
 import Quill from "quill";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 const AddBlog = () => {
   const editorRef = useRef(null);
   const quillRef = useRef(null);
+  const { axios } = useAppContext();
+  const [isAdding, SetIsAdding] = useState(false);
   const [image, setImage] = useState(false);
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
@@ -11,7 +15,37 @@ const AddBlog = () => {
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmitHandler = async (event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
+      SetIsAdding(true);
+      const blog = {
+        title,
+        subTitle,
+        description: quillRef.current.root.innerHTML,
+        category,
+        isPublished,
+      };
+      console.log("blog data sunny", blog);
+      const formData = new FormData();
+      formData.append("blog", JSON.stringify(blog));
+      formData.append("image", image);
+
+      const { data } = await axios.post("/api/blog/add", formData);
+      if (data.success) {
+        toast.success(data.message);
+        setImage(false);
+        setTitle("");
+        quillRef.current.root.innerHTML = "";
+        setCategory("Startup");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log("Error kya hai ji", error);
+      toast.error(error.message);
+    } finally {
+      SetIsAdding(false);
+    }
   };
   const generateContent = async () => {};
 
@@ -29,6 +63,7 @@ const AddBlog = () => {
             <img
               src={!image ? assets.upload_area : URL.createObjectURL(image)}
               className="mt-2 h-16 rounded cursor-pointer"
+              name="image"
               alt=""
             />
             <input
@@ -45,6 +80,8 @@ const AddBlog = () => {
               type="text"
               placeholder="Enter Title"
               required
+              value={title}
+              name="title"
               className="w-full border-b outline-none py-2 px-3"
               onChange={(e) => {
                 setTitle(e.target.value);
@@ -57,6 +94,8 @@ const AddBlog = () => {
               type="text"
               placeholder="Enter Sub Title"
               required
+              value={subTitle}
+              name="subTitle"
               className="w-full border-b outline-none py-2 px-3"
               onChange={(e) => {
                 setSubTitle(e.target.value);
@@ -100,7 +139,7 @@ const AddBlog = () => {
             <p>Published Now</p>
             <input
               type="checkbox"
-              name=""
+              name="isPublished"
               checked={isPublished}
               className="scale-90 cursor-pointer"
               onChange={(e) => {
@@ -110,10 +149,11 @@ const AddBlog = () => {
           </div>
           <div className="my-4">
             <button
+              disabled={isAdding}
               className="bg-blue-600 cursor-pointer py-2 px-4 w-full rounded-sm text-white"
               type="submit"
             >
-              Add Blog
+              {isAdding ? "Adding...." : "Add Blog"}
             </button>
           </div>
         </div>
