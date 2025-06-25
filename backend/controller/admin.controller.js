@@ -4,8 +4,6 @@ import { Blog } from "../model/blog.model.js";
 import { comment } from "../model/comment.model.js";
 
 export const adminLogin = async (req, res) => {
-
-
   const { email, password } = req.body;
   try {
     if (!email || !password) {
@@ -46,7 +44,7 @@ export const getAllBlogsAdmin = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Get all blog data",
-      data,
+      blogs: data,
     });
   } catch (error) {
     res.status(404).json({
@@ -59,14 +57,14 @@ export const getAllBlogsAdmin = async (req, res) => {
 
 export const getAllComments = async (req, res) => {
   try {
-    const allComments = await comment
+    const data = await comment
       .find({})
       .populate("blog")
       .sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       message: "Get All Comments",
-      allComments,
+      data,
     });
   } catch (error) {
     res.status(404).json({
@@ -107,8 +105,8 @@ export const getDashboard = async (req, res) => {
 //Admin power deleted and approve comment
 export const deleteCommentsById = async (req, res) => {
   try {
-    const { _id } = req.body;
-    const commentDelete = await comment.findByIdAndDelete(_id);
+    const { id } = req.body;
+    const commentDelete = await comment.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
       message: "Comment Deleted Successfully",
@@ -125,16 +123,14 @@ export const deleteCommentsById = async (req, res) => {
 //Approve comment
 export const approveComments = async (req, res) => {
   try {
-    const { _id } = req.body;
-    const commentApprove = await comment.findByIdAndUpdate(_id, {
+    const { id } = req.body;
+    console.log(id);
+    const commentApprove = await comment.findByIdAndUpdate(id, {
       isApproved: true,
     });
-    // commentApprove.isApproved = !commentApprove.isApproved;
-    // await commentApprove.save();
     res.status(200).json({
       success: true,
-      token: token,
-      message: "",
+      message: "Comment Approved Successfully",
     });
   } catch (error) {
     res.status(404).json({

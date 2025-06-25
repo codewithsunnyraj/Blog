@@ -12,7 +12,6 @@ import { upload } from "../middleware/multer.js";
 import { Auth } from "../middleware/Auth.middleware.js";
 const router = express.Router();
 router.post("/add", upload.single("image"), Auth, addBlog);
-
 router.get("/allBlog", fetchBlog);
 router.get("/blogById/:id", getBlogById);
 router.delete("/blogDelete", deleteBlog);

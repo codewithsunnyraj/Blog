@@ -4,7 +4,8 @@ import { Blog } from "../model/blog.model.js";
 import { comment } from "../model/comment.model.js";
 export const addBlog = async (req, res) => {
   try {
-    const { title, subTitle, description, category, isPublished } = req.body;
+    const blog = JSON.parse(req.body.blog);
+    const { title, subTitle, description, category, isPublished } = blog;
     const imageFile = req.file;
 
     if (!title) {
@@ -95,7 +96,6 @@ export const fetchBlog = async (req, res) => {
 export const getBlogById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const blog = await Blog.findById(id);
     if (!blog) {
       return res.status(404).json({
@@ -176,16 +176,16 @@ export const addComment = async (req, res) => {
       content,
       name,
     };
-
     const AddComment = await comment(data);
     await AddComment.save();
     res.status(200).json({
       message: "Comment Added Successfully",
       success: true,
+      data: AddComment,
     });
   } catch (error) {
     res.status(404).json({
-      message: "Error whilie adding Comment",
+      message: "Error while adding Comment",
       success: false,
     });
   }
@@ -201,7 +201,7 @@ export const getBlogComments = async (req, res) => {
     res.status(200).json({
       message: "Comment Data Fetched",
       success: true,
-      blogComment,
+      data: blogComment,
     });
   } catch (error) {
     res.status(404).json({
