@@ -4,6 +4,7 @@ import {
   addComment,
   deleteBlog,
   fetchBlog,
+  generateContent,
   getBlogById,
   getBlogComments,
   togglePublish,
@@ -18,5 +19,6 @@ router.delete("/blogDelete", deleteBlog);
 router.post("/toggle", Auth, togglePublish);
 router.post("/add-comment", addComment);
 router.post("/comment", getBlogComments);
+router.post("/generate", Auth, generateContent);
 
 export default router;

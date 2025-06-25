@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { assets, blogCategories } from "../../assets/assets";
 import Quill from "quill";
 import { useAppContext } from "../../context/AppContext";
+import { parse } from "marked";
 import toast from "react-hot-toast";
 const AddBlog = () => {
   const editorRef = useRef(null);
   const quillRef = useRef(null);
   const { axios } = useAppContext();
   const [isAdding, SetIsAdding] = useState(false);
+  const [loading, SetLoading] = useState(false);
   const [image, setImage] = useState(false);
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
@@ -47,7 +49,24 @@ const AddBlog = () => {
       SetIsAdding(false);
     }
   };
-  const generateContent = async () => {};
+  const generateContent = async () => {
+    if (!title) return toast.error("Please enter a title");
+    try {
+      SetLoading(true);
+      const { data } = await axios.post("/api/blog/generate", {
+        prompt: title,
+      });
+      if (data.success) {
+        quillRef.current.root.innerHTML = parse(data.content);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      SetLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -106,8 +125,14 @@ const AddBlog = () => {
             <p>Blog Description</p>
             <div className="w-full h-74 pb-16 sm:pb-10 pt-2 relative">
               <div ref={editorRef}></div>
+              {loading && (
+                <div className="absolute right-0 top-0 left-0 bottom-0 flex items-center justify-center bg-black mt-2">
+                  <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
+                </div>
+              )}
               <button
                 type="button"
+                disabled={loading}
                 className="absolute bottom-1 cursor-pointer right-2 ml-2 bg-black text-white px-6 py-2"
                 onClick={generateContent}
               >
